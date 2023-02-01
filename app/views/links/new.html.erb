@@ -1,0 +1,29 @@
+<h2>新增連結</h2>
+
+
+
+
+<%= form_with model: @link do |f| %>   
+
+  <%= f.label :url %>
+  <%= f.text_field :url %>
+
+  <%= f.label :slug %>
+  <%= f.text_field :slug %>
+
+  <%= f.submit %>
+
+<% end %>
+
+<br>
+<br>
+
+<h3>redis短連結表單</h3>
+<%= form_with model: @link do |f| %>
+  <%= f.label :url %>
+  <%= f.text_field :url %>
+
+  <%= f.submit %>
+<% end %>
+
+
