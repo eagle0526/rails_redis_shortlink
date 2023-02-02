@@ -50,9 +50,9 @@
     
     <tr>
         <td><%#= Redis.new.get k %></td>
-        <td><%= link_to k, redis_link_links_path(k) %></td>
-        <td><%= link_to 'click', increase_key_links_path(k) %></td>
-        <td><%= link_to 'delete', expire_key_links_path(k) %></td>
+        <td><%#= link_to k, redis_link_links_path(k) %></td>
+        <td><%#= link_to 'click', increase_key_links_path(k) %></td>
+        <td><%#= link_to 'delete', expire_key_links_path(k) %></td>
         <td><%#= Redis.new.hget k click %></td>
         <td></td>
     </tr>
@@ -66,29 +66,33 @@
 <h3>redis hash</h3>
 <table>
     <tr>
+        <td>hash的key</td>
         <td>原本的連結</td>
         <td>短連結</td>
-        <td>增加次數</td>
-        <%# <td>被點擊次數</td> %>
-        <td>刪除連結</td>
-        <td></td>
+        <td>slug</td>
+        <td>visit</td>        
+        <td>刪除快取</td>
+        
     </tr>
 
     <% @keys.each do |k| %>
     
     <tr>
-        <td><%#= Redis.new.get k %></td>
-        <td><%= link_to k, redis_link_links_path(k) %></td>
-        <td><%= link_to 'click', increase_key_links_path(k) %></td>
+        <td><%= k %></td>
+        <td><%= $redis.hgetall(k)["url"] %></td>
+        <td><%= link_to $redis.hgetall(k)["short"], redis_link_links_path(k) %></td>
+        <td><%= $redis.hgetall(k)["slug"] %></td>        
+        <td><%= link_to $redis.hgetall(k)["visit"], redis_link_links_path(k) %></td>                        
         <td><%= link_to 'delete', expire_key_links_path(k) %></td>
-        <td><%#= Redis.new.hget k click %></td>
-        <td></td>
     </tr>
     
     <% end %>
 </table>
+<br>
+<br>
+<button><%= link_to '把redis瀏覽次數，匯入資料庫', import_clicked_links_path %></button>
 
-
+<%# hset id1934 url http://localhost:3000/shorts/93481d slug 934 visit 0 %>
 <%# 這邊來設計hash的規則，我的hash規則是，連結的6位亂數碼，加上連結資料庫中的id，所以是這樣id-1:93481d %>
 <%# 接著hash裡面有3個值，一個是url 一個是short 一個是slug 一個是 visit點擊次數 %>
 <%# 最後用hincrby id1934 visit 1 這個方法，可以幫visit每點擊一次就 + 1 %>

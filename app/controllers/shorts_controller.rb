@@ -11,14 +11,28 @@ class ShortsController < ApplicationController
     # redis = Redis.new
     
     # 如果今天redis用get方法，發現有此筆資料，就直接redirect_to，到目標網址
-    if $redis.get("#{ENV["WEB_DOMAIN"]}/shorts/#{params[:id]}")
-      redirect_to $redis.get("#{ENV["WEB_DOMAIN"]}/shorts/#{params[:id]}")
+    # if $redis.hgetall("#{ENV["WEB_DOMAIN"]}/shorts/#{params[:id]}")
+    # redirect_to $redis.hget("#{ENV["WEB_DOMAIN"]}/shorts/#{params[:id]}")
+    if $redis.hgetall("id-#{@link.id}:#{@link.slug}")["url"]
+      # redirect_to $redis.hgetall("id-#{@link.id}:#{@link.slug}")["url"]
+      redirect_to @link.url
+      
     else
     # 否則就用setnx，先寫一份到資料庫，再重導入
-      $redis.setnx "#{ENV["WEB_DOMAIN"]}/shorts/#{params[:id]}", @link.url
-      redirect_to $redis.get("#{ENV["WEB_DOMAIN"]}/shorts/#{params[:id]}")
+      # $redis.setnx "#{ENV["WEB_DOMAIN"]}/shorts/#{params[:id]}", @link.url
+      # redirect_to $redis.get("#{ENV["WEB_DOMAIN"]}/shorts/#{params[:id]}")
+
+
+    # 用hset改寫，這個 visit 不應該要是0，應該要從資料庫的click抓出數量
+      hash = {"url" => @link.url, "short" => "#{ENV["WEB_DOMAIN"]}/shorts/#{@link.slug}", "slug" => @link.slug, "visit" => @link.clicked}
+      $redis.hset("id-#{@link.id}:#{@link.slug}", hash)
+      # redirect_to $redis.hgetall("id-#{@link.id}:#{@link.slug}")["url"]
+      redirect_to @link.url
+      
     end
 
+    
+    # 有link資料，就可以知道
 
   end
 

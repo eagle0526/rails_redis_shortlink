@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get :increase_key
       get :data_link
       get :redis_link
+      get :import_clicked
     end
   end
 

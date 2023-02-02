@@ -28,9 +28,14 @@ class LinksController < ApplicationController
 
       # @shortcode = generate_slug
       @shortcode = @link.slug
-      $redis.setnx "#{ENV["WEB_DOMAIN"]}/shorts/#{@shortcode}", params[:link][:url]
+      # 普通的set新增
+      # $redis.setnx "#{ENV["WEB_DOMAIN"]}/shorts/#{@shortcode}", params[:link][:url]
 
-      # redis.hsetnx "https://woding/#{@shortcode}" click 0
+      # 用hash新增 - hset id-43:6365a2 url https://fintechrich.com short http://localhost:3000/shorts/6365a2 slug 6365a2 visit 0
+      hash = {"url" => @link.url, "short" => "#{ENV["WEB_DOMAIN"]}/shorts/#{@link.slug}", "slug" => @link.slug, "visit" => 0}
+      $redis.hset("id-#{@link.id}:#{@link.slug}", hash)
+
+      
     end
 
     redirect_to root_path
@@ -51,24 +56,31 @@ class LinksController < ApplicationController
     redirect_to root_path
   end
 
-
+  
   def redis_link
-    # render html: params
-
-    redis = Redis.new
-    if redis.get(params[:format])
-      redirect_to redis.get(params[:format])
+    # render html: params[:format]
+    if $redis.hgetall(params[:format])["url"]
+      $redis.hincrby(params[:format], "visit", 1)
+      redirect_to root_path
     else
-      # 根據使用者點擊的redis連結，用slug找出是哪一個link
-      slug = params[:format][-6..-1]
-      link = Link.find_by!(slug: params[:slug])
-
-      # 把此link存進redis
-      shortcode = slug
-      redis.setnx "https://woding/#{@shortcode}", link.url
-
-      redirect_to link.url
+      render html: "no"
     end
+    # <%# 最後用hincrby id1934 visit 1 這個方法，可以幫visit每點擊一次就 + 1 %>
+
+    # redis = Redis.new
+    # if redis.get(params[:format])
+    #   redirect_to redis.get(params[:format])
+    # else
+    #   # 根據使用者點擊的redis連結，用slug找出是哪一個link
+    #   slug = params[:format][-6..-1]
+    #   link = Link.find_by!(slug: params[:slug])
+
+    #   # 把此link存進redis
+    #   shortcode = slug
+    #   redis.setnx "https://woding/#{@shortcode}", link.url
+
+    #   redirect_to link.url
+    # end
 
   end
   # 如果在redis找不到連結，就到資料庫去找，資料庫找到後，先寫一份到redis，寫完後再重導到該網址
@@ -76,11 +88,20 @@ class LinksController < ApplicationController
 
 
   def expire_key
-    # render html: params[:format]
+    # render html: params
+    
+    # 刪除快取前，先把link找出來，並且把快取的visit回填資料庫中
+    id = params[:format][3..4]    
+    @link = Link.find_by!(id: id)
 
-    redis = Redis.new
+    @link.clicked = $redis.hgetall(params[:format])["visit"].to_i
+    @link.save
+    
+    
+    # redis = Redis.new
     key = params[:format]
-    redis.expire(key, 0)
+    
+    $redis.expire(key, 0)
     redirect_to root_path
   end
 
@@ -91,6 +112,21 @@ class LinksController < ApplicationController
     redis.incr(key)
     
   end
+  
+  def import_clicked
+    # render html: params
+    keys = $redis.keys("*")
+
+    # 這邊根據redis的key，把所有link所有點擊數灌回資料庫
+    keys.each do |key|
+      link = Link.find_by!(slug: $redis.hgetall(key)["slug"])
+      link.clicked = $redis.hgetall(key)["visit"].to_i
+      link.save
+    end
+
+    redirect_to root_path
+  end
+  
 
 
   private
