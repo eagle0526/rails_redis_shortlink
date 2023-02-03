@@ -59,3 +59,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "redis", "~> 5.0"
 
 
+
+gem "foreman", "~> 0.87.2"

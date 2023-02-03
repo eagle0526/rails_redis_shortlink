@@ -4,17 +4,19 @@
 
 
 <h3>資料庫</h3>
-<table>
+<table class="table-auto">
+    <thead>
     <tr>
-        <td>id</td>
-        <td>url</td>
-        <td>slug</td>
-        <td>clicked</td>        
-        <td>短連結</td>        
-        <td>刪除</td>        
+        <th>id</th>
+        <th>url</th>
+        <th>slug</th>
+        <th>clicked</th>        
+        <th>短連結</th>        
+        <th>刪除</th>        
     </tr>
-
+    </thead>
     <% @links.each do |link| %>
+    <tbody>
     <tr>
         <td><%= link.id %></td>
         <td><%= link.url %></td>
@@ -26,6 +28,7 @@
         <td><%= link_to link.short, link.short %></td>     
         <td><%= link_to 'delete', link_path(link), data: {method: "delete"} %></td>   
     </tr>
+    </tbody>
     <% end %>
 <%# root_path(query: tag.name) %>
 
