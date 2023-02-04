@@ -1,0 +1,35 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base{
+    h1,h2,h3,h4,h5,h6,p,span{
+      @apply text-gray-800;
+    }
+
+    h2 {
+        @apply text-2xl
+    }
+
+    h3 {
+        @apply text-xl
+    }
+
+    h4 {
+        @apply text-base
+    }
+
+}
+
+@layer components {
+    .card {
+      background-color: theme('colors.white');
+      border-radius: theme('borderRadius.lg');
+      padding: theme('spacing.6');
+      box-shadow: theme('boxShadow.xl');
+    }
+    .main-btn {
+        @apply bg-blue-500 px-6 py-2 rounded text-white;
+    }
+    
+}
