@@ -1,69 +1,64 @@
-<h2 class="pl-10 pt-10">新增連結</h2>
+<section class="bg-gray-100 py-5">
+  <div class="m-20">
+    <div>
+      <h2>新增連結</h2>
+    </div>
+    <%= form_with model: @link, class: "py-2", data: {controller: "link-new"}  do |f| %>   
+      <div class="my-2 bg-white rounded py-6 flex justify-around items-center">        
+        <%= f.label :Link, class: "text-xl" %>
+        <%= f.text_field :url, placeholder: "https://www.google.com", class: "w-4/5 rounded bg-gray-100 py-2 px-4", 
+                                                                data: {link_new_target: "url",
+                                                                action: "input->link-new#inputUrl"} %>
+      </div>  
+      <%# <div class="m-2"> %>
+        <%#= f.label :slug %>
+        <%#= f.text_field :slug, class: "w-1/2 border-2 rounded" %><br>
+      <%# </div> %>  
 
+      <div class="mt-10 bg-white py-6 px-4 flex justify-around items-center">
+              
+        <div class="flex justify-around items-center">
+          <i class="fa-solid fa-tower-broadcast text-blue-500 text-xl mr-2"></i>
+          <%= f.text_field :utm_campaign, placeholder: "utm_campaign", class: "w-4/5 border-b-2 rounded", 
+                                                                     data: {action: "input->link-new#inputUtmCampaign",
+                                                                            link_new_target: "utmCampaign"} %>
+        </div>   
+        <div class="flex justify-around items-center">
+          <i class="fa-solid fa-mobile-screen-button text-blue-500 text-xl"></i>
+          <%= f.text_field :utm_medium, placeholder: "utm_medium", class: "w-4/5 border-b-2 rounded", 
+                                                                 data: {action: "input->link-new#inputUtmMedium",
+                                                                        link_new_target: "utmMedium"} %>                                                       
+        </div>
 
-
-
-<%= form_with model: @link, class: "p-10", data: {controller: "link-new"}  do |f| %>   
-
-  <div class="m-2">
-    <%= f.label :url %>
-    <%= f.text_field :url, class: "w-full border-2 rounded", data: {link_new_target: "url",
-                                                                    action: "input->link-new#inputUrl"} %><br>
+        <div class="flex justify-around items-center">          
+          <i class="fa-solid fa-map-pin text-blue-500 text-xl"></i>
+          <%= f.text_field :utm_source, placeholder: "utm_source", class: "w-4/5 border-b-2 rounded", 
+                                                                   data: {action: "input->link-new#inputUtmSource",
+                                                                          link_new_target: "utmSource"} %>                                             
+        </div>        
+        <div class="flex justify-around items-center">          
+          <i class="fa-solid fa-table-columns text-blue-500 text-xl"></i>
+          <%= f.text_field :utm_term, placeholder: "utm_term", class: "w-4/5 border-b-2 rounded", 
+                                                               data: {action: "input->link-new#inputUtmTerm",
+                                                                      link_new_target: "utmTerm"} %>                                         
+        </div>        
+        <div class="flex justify-around items-center">        
+          <i class="fa-solid fa-file-lines text-blue-500 text-xl"></i>          
+          <%= f.text_field :utm_content, placeholder: "utm_content", class: "w-4/5 border-b-2 rounded", 
+                                                                data: {action: "input->link-new#inputUtmContent",
+                                                                       link_new_target: "utmContent"} %>                                      
+        </div>        
+        
+      </div>
+      <div class="flex justify-around items-center mt-10">
+        <%= f.submit '新增短連結', class: "main-btn" %>
+        <%= link_to '回上一頁', root_path, class: "second-btn" %>
+      </div>
+      
+    <% end %>
+    
   </div>
-  
-  <div class="m-2">
-    <%= f.label :slug %>
-    <%= f.text_field :slug, class: "w-1/2 border-2 rounded" %><br>
-  </div>
-
-  
-  <div class="mt-10">
-    <%= f.label :utm_campaign %>
-    <%= f.text_field :utm_campaign, class: "w-1/2 border-2 rounded", data: {action: "input->link-new#inputUtmCampaign",
-                                                                            link_new_target: "utmCampaign"} %><br>
-  </div>
-  <div class="mt-2">
-    <%= f.label :utm_medium %>
-    <%= f.text_field :utm_medium, class: "w-1/2 border-2 rounded", data: {action: "input->link-new#inputUtmMedium",
-                                                                            link_new_target: "utmMedium"} %><br>
-  </div>
-  <div class="mt-2">
-    <%= f.label :utm_source %>
-    <%= f.text_field :utm_source, class: "w-1/2 border-2 rounded", data: {action: "input->link-new#inputUtmSource",
-                                                                            link_new_target: "utmSource"} %><br>
-  </div>
-  <div class="mt-2">
-    <%= f.label :utm_term %>
-    <%= f.text_field :utm_term, class: "w-1/2 border-2 rounded", data: {action: "input->link-new#inputUtmTerm",
-                                                                            link_new_target: "utmTerm"} %><br>
-  </div>
-  <div class="mt-2">
-    <%= f.label :utm_content %>
-    <%= f.text_field :utm_content, class: "w-1/2 border-2 rounded", data: {action: "input->link-new#inputUtmContent",
-                                                                            link_new_target: "utmContent"} %><br>
-  </div>
-
-  
-
-  <%= f.submit class: "bg-blue-500 px-6 py-2 rounded text-white mt-10" %>
-
-<% end %>
-
-
-<%= link_to '回上一頁', root_path, class: "main-btn mt-10 ml-10" %>
-
-
-
+</section>
 
 <br>
 <br>
-
-<h3>redis短連結表單</h3>
-<%= form_with model: @link do |f| %>
-  <%= f.label :url %>
-  <%= f.text_field :url %>
-
-  <%= f.submit %>
-<% end %>
-
-

@@ -6,14 +6,20 @@
 // <div data-controller="hello">
 //   <h1 data-target="hello.output"></h1>
 // </div>
+import { library, dom} from '@fortawesome/fontawesome-svg-core' 
+import { faTowerBroadcast, faMobileScreenButton, faMapPin, faTableColumns, faFileLines, faLink } from '@fortawesome/free-solid-svg-icons' 
 
 import { Controller } from "stimulus"
 
 export default class extends Controller {
   static targets = [ "url", "utmCampaign", "utmMedium", "utmSource", "utmTerm", "utmContent" ]
 
-  connect() {
+  initialize() {
+    library.add(faTowerBroadcast, faMobileScreenButton, faMapPin, faTableColumns, faFileLines, faLink)
+  }
 
+  connect() {
+    dom.watch()
   }
 
   inputUtmCampaign(e) {    
