@@ -29,7 +29,7 @@
           <td class="px-6 py-4"><%= link.url %></td>
           <td class="px-6 py-4"><%= link.slug %></td>
           <td class="px-6 py-4"><%= link.clicked %></td>        
-          <td class="px-6 py-4"><%= link_to link.short, link.short %></td>     
+          <td class="px-6 py-4"><%= link_to link.short, link.short, data:{ turbolinks: "false" } %></td>     
           <td class="px-6 py-4"><%= link_to 'delete', link_path(link), data: {method: "delete"} %></td>   
       </tr>
       </tbody>
@@ -45,7 +45,7 @@
     <h3 class="text-center mb-4">redis資料</h3>
   </div>
 
-  <table class="w-full text-base text-left text-gray-500 dark:text-gray-400">
+  <table class="w-full text-base text-left text-gray-500 dark:text-gray-400 table-auto">
       <thead class="text-base text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>
           <th class="px-6 py-3">redis的key</th>
@@ -61,9 +61,9 @@
       <tr>
           <td class="px-6 py-4"><%= k %></td>
           <td class="px-6 py-4"><%= $redis.hgetall(k)["url"] %></td>
-          <td class="px-6 py-4"><%= link_to $redis.hgetall(k)["short"], redis_link_links_path(k) %></td>
+          <td class="px-6 py-4"><%= link_to $redis.hgetall(k)["short"], increase_visit_links_path(k) %></td>
           <td class="px-6 py-4"><%= $redis.hgetall(k)["slug"] %></td>        
-          <td class="px-6 py-4"><%= link_to $redis.hgetall(k)["visit"], redis_link_links_path(k) %></td>     
+          <td class="px-6 py-4"><%= link_to $redis.hgetall(k)["visit"], increase_visit_links_path(k) %></td>     
           <td class="px-6 py-4"><%= link_to 'delete', expire_key_links_path(k) %></td>   
       </tr>
       </tbody>
@@ -72,9 +72,9 @@
 
   <h4 class="text-red-500 text-center my-5">ps. redis key的命名規則是資料庫的"id-數字:slug"</h4>
 
-  <br>    
-  <br>    
-
+  <div class="text-center">
+    <button><%= link_to '把redis瀏覽次數，匯入資料庫', import_clicked_links_path, class: "second-btn" %></button>
+  </div>
 
   <%# hset id1934 url http://localhost:3000/shorts/93481d slug 934 visit 0 %>
   <%# 這邊來設計hash的規則，我的hash規則是，連結的6位亂數碼，加上連結資料庫中的id，所以是這樣id-1:93481d %>

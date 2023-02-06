@@ -1,11 +1,8 @@
 class LinksController < ApplicationController
 
-  # before_action only: [:create] do
-  #   rand_string(length) 
-  # end
   before_action :find_link, only: [:destroy]
   before_action :rand_string, only: [:create]
-  before_action :generate_slug, only: [:create]
+  # before_action :generate_slug, only: [:create]
 
   def index
     @links = Link.all
@@ -19,9 +16,7 @@ class LinksController < ApplicationController
   end
 
   def create
-
-    # render html: params[:link][:url]
-
+    
     @link = Link.new(link_params)
 
     if @link.save
@@ -42,26 +37,17 @@ class LinksController < ApplicationController
 
   end
 
-
-  def show
-    @link = Link.find_by_slug(params[:slug])
-    render 'errors/404', status: 404 if @link.nil?
-
-    @link.update_attribute(:clicked, @link.clicked + 1)
-    redirect_to @link.url
-  end
-
   def destroy
     @link.destroy
     redirect_to root_path
   end
 
   
-  def redis_link
+  def increase_visit
     # render html: params[:format]
     if $redis.hgetall(params[:format])["url"]
       $redis.hincrby(params[:format], "visit", 1)
-      redirect_to root_path
+      redirect_to $redis.hgetall(params[:format])["url"]
     else
       render html: "no"
     end
@@ -90,16 +76,15 @@ class LinksController < ApplicationController
   def expire_key
     # render html: params
     
+    key = params[:format]
+
     # 刪除快取前，先把link找出來，並且把快取的visit回填資料庫中
-    id = params[:format][3..4]    
+    id = key[3..4]    
     @link = Link.find_by!(id: id)
 
-    @link.clicked = $redis.hgetall(params[:format])["visit"].to_i
+    @link.clicked = $redis.hgetall(key)["visit"].to_i
     @link.save
-    
-    
-    # redis = Redis.new
-    key = params[:format]
+            
     
     $redis.expire(key, 0)
     redirect_to root_path

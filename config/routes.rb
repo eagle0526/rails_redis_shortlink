@@ -9,13 +9,13 @@ Rails.application.routes.draw do
       get :expire_key
       get :increase_key
       get :data_link
-      get :redis_link
+      get :increase_visit
       get :import_clicked
     end
   end
 
 
-  resources :shorts
+  resources :shorts, only: [:show]
 
 
 
