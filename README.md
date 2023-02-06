@@ -30,6 +30,8 @@
 
 
 
+### 影片操作
+https://ku3suqyx8g.vmaker.com/record/IiQSLR0zwmImONHe    
 
 
 ## 完整短連結實作文章
@@ -38,3 +40,24 @@
 
 
 
+## 使用須知
+
+請於 clone 下來後，依照下方指令執行
+
+### 1、安裝redis
+```shell
+$ brew install redis
+```
+
+### 2、把env.example換成env
+由於我短連結的前半部份，是使用環境變數來設定，因此拉下來的時候記得修改
+ex. 我檔案設定的是這樣 WEB_DOMAIN=http://localhost:3000
+```md
+> WEB_DOMAIN=
+```
+
+### 3、打開server
+```shell
+$ foreman s
+$ redis-server
+```
