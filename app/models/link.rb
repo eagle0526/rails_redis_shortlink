@@ -7,18 +7,9 @@ class Link < ApplicationRecord
 
   before_validation :generate_slug
 
-  # 這個方法是把網址轉成slug   
+  # 這個方法是把整段連結轉成轉成包含slug的方法
   def short
-    # Rails.application.routes.url_helpers.short_url(slug: self.slug)
-    # Rails.application.routes.url_helpers.short_url(slug: self.slug)    
     "#{ENV["WEB_DOMAIN"]}/shorts/#{self.slug}"
-
-    # 我現在有link，link的欄位有 url、slug
-    # 我想要把short方法，寫成短連結的寫法
-    # 現在教學寫的方法是直接讀取routes那邊預設的url
-    # 不過因為想要把前面那段的url，轉成自己填的URL  
-    
-
   end
 
   # 隨機產生slug
