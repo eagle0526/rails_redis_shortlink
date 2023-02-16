@@ -9,7 +9,7 @@
   
 
   <div>
-    <h3 class="text-center mb-4">資料庫資料</h3>
+    <h3 class="mb-4 text-center">資料庫資料</h3>
   </div>
   <table class="w-full text-base text-left text-gray-500 dark:text-gray-400">
       <thead class="text-base text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -42,10 +42,10 @@
   <br>    
 
   <div>
-    <h3 class="text-center mb-4">redis資料</h3>
+    <h3 class="mb-4 text-center">redis資料</h3>
   </div>
 
-  <table class="w-full text-base text-left text-gray-500 dark:text-gray-400 table-auto">
+  <table class="w-full text-base text-left text-gray-500 table-auto dark:text-gray-400">
       <thead class="text-base text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>
           <th class="px-6 py-3">redis的key</th>
@@ -64,13 +64,13 @@
           <td class="px-6 py-4"><%= link_to $redis.hgetall(k)["short"], increase_visit_links_path(k) %></td>
           <td class="px-6 py-4"><%= $redis.hgetall(k)["slug"] %></td>        
           <td class="px-6 py-4"><%= link_to $redis.hgetall(k)["visit"], increase_visit_links_path(k), class: "text-red-500" %></td>     
-          <td class="px-6 py-4"><%= link_to 'delete', expire_key_links_path(k), class: "second-btn" %></td>   
+          <td class="px-6 py-4"><%= link_to '刪除', expire_key_links_path(k), class: "second-btn" %></td>   
       </tr>
       </tbody>
       <% end %>  
   </table>
 
-  <h4 class="text-red-500 text-center my-5">ps. redis key的命名規則是資料庫的"id-數字:slug"</h4>
+  <h4 class="my-5 text-center text-red-500">ps. redis key的命名規則是資料庫的"id-數字:slug"</h4>
 
   <div class="text-center">
     <button><%= link_to '把redis瀏覽次數，匯入資料庫', import_clicked_links_path, class: "second-btn" %></button>

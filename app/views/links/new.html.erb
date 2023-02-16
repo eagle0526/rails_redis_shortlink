@@ -1,52 +1,53 @@
-<section class="bg-gray-100 py-5">
+<section class="py-5 bg-gray-100">
   <div class="m-20">
     <div>
       <h2>新增連結</h2>
     </div>
     <%= form_with model: @link, class: "py-2", data: {controller: "link-new"}  do |f| %>   
-      <div class="my-2 bg-white rounded py-6 flex justify-around items-center">        
-        <%= f.label :Link, class: "text-xl" %>
+      <div class="flex items-center justify-around py-6 my-2 bg-white rounded">        
+        <%#= f.label :ewrew, class: "text-xl" %>
+        <%= f.label :url %>
         <%= f.text_field :url, placeholder: "https://www.google.com", class: "w-4/5 rounded bg-gray-100 py-2 px-4", 
                                                                 data: {link_new_target: "url",
                                                                 action: "input->link-new#inputUrl"} %>
       </div>  
 
-      <div class="mt-10 bg-white py-6 px-4 flex justify-around items-center">
+      <div class="flex items-center justify-around px-4 py-6 mt-10 bg-white">
 
-        <div class="flex justify-around items-center">
-          <i class="fa-solid fa-tower-broadcast text-blue-500 text-xl mr-2"></i>
+        <div class="flex items-center justify-around">
+          <i class="mr-2 text-xl text-blue-500 fa-solid fa-tower-broadcast"></i>          
           <%= f.text_field :utm_campaign, placeholder: "utm_campaign", class: "w-4/5 border-b-2 rounded", 
                                                                      data: {action: "input->link-new#inputUtmCampaign",
                                                                             link_new_target: "utmCampaign"} %>
         </div>   
-        <div class="flex justify-around items-center">
-          <i class="fa-solid fa-mobile-screen-button text-blue-500 text-xl"></i>
+        <div class="flex items-center justify-around">
+          <i class="text-xl text-blue-500 fa-solid fa-mobile-screen-button"></i>
           <%= f.text_field :utm_medium, placeholder: "utm_medium", class: "w-4/5 border-b-2 rounded", 
                                                                  data: {action: "input->link-new#inputUtmMedium",
                                                                         link_new_target: "utmMedium"} %>                                                       
         </div>
 
-        <div class="flex justify-around items-center">          
-          <i class="fa-solid fa-map-pin text-blue-500 text-xl"></i>
+        <div class="flex items-center justify-around">          
+          <i class="text-xl text-blue-500 fa-solid fa-map-pin"></i>
           <%= f.text_field :utm_source, placeholder: "utm_source", class: "w-4/5 border-b-2 rounded", 
                                                                    data: {action: "input->link-new#inputUtmSource",
                                                                           link_new_target: "utmSource"} %>                                             
         </div>        
-        <div class="flex justify-around items-center">          
-          <i class="fa-solid fa-table-columns text-blue-500 text-xl"></i>
+        <div class="flex items-center justify-around">          
+          <i class="text-xl text-blue-500 fa-solid fa-table-columns"></i>
           <%= f.text_field :utm_term, placeholder: "utm_term", class: "w-4/5 border-b-2 rounded", 
                                                                data: {action: "input->link-new#inputUtmTerm",
                                                                       link_new_target: "utmTerm"} %>                                         
         </div>        
-        <div class="flex justify-around items-center">        
-          <i class="fa-solid fa-file-lines text-blue-500 text-xl"></i>          
+        <div class="flex items-center justify-around">        
+          <i class="text-xl text-blue-500 fa-solid fa-file-lines"></i>          
           <%= f.text_field :utm_content, placeholder: "utm_content", class: "w-4/5 border-b-2 rounded", 
                                                                 data: {action: "input->link-new#inputUtmContent",
                                                                        link_new_target: "utmContent"} %>                                      
         </div>        
         
       </div>
-      <div class="flex justify-around items-center mt-10">
+      <div class="flex items-center justify-around mt-10">
         <%= f.submit '新增短連結', class: "main-btn" %>
         <%= link_to '回上一頁', root_path, class: "second-btn" %>
       </div>

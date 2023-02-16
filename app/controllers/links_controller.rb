@@ -49,13 +49,17 @@ class LinksController < ApplicationController
     
     key = params[:format]
 
+    # render html: @link
     # 把link找出來，並且把快取的visit回填資料庫中
     id = key[3..4]    
-    @link = Link.find_by!(id: id)
-    @link.clicked = $redis.hgetall(key)["visit"].to_i
-    @link.save
+    
+    if Link.find_by(id: id)
+      @link = Link.find_by!(id: id)      
+      @link.clicked = $redis.hgetall(key)["visit"].to_i
+      @link.save
+    end
             
-    # 刪除快取
+    # # 刪除快取    
     $redis.expire(key, 0)
     redirect_to root_path
   end
